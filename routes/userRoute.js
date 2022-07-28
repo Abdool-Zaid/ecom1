@@ -4,6 +4,7 @@ const con = require("../lib/db_connection");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+
 // Register Route
 // The Route where Encryption starts
 router.post("/register", (req, res) => {
@@ -101,7 +102,7 @@ router.post("/login", (req, res) => {
 });
 
 // Verify
-router.get("/verify", (req, res) => {
+router.get("/users/verify", (req, res) => {
   const token = req.header("x-auth-token");
   jwt.verify(token, process.env.jwtSecret, (error, decodedToken) => {
     if (error) {
