@@ -4,7 +4,7 @@ const con = require("../lib/db_connection");
 
 router.get("/", (req, res) => {
   try {
-    con.query("SELECT * FROM products", (err, result) => {
+    con.query("SELECT * FROM orders", (err, result) => {
       if (err) throw err;
       res.send(result);
     });
@@ -14,11 +14,11 @@ router.get("/", (req, res) => {
   }
 });
 
-// Gets one products
+// Gets one orders
 router.get("/:id", (req, res) => {
   try {
     con.query(
-      `SELECT * FROM products WHERE product_id = ${req.params.id}`,
+      `SELECT * FROM orders WHERE product_id = ${req.params.id}`,
       (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -33,16 +33,12 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
   // the below allows you to only need one const, but every input required is inside of the brackets
   const {
-    sku ,
-    name,
-    price,
-    weight,
-    descriptions,
-    thumbnail,
-    image,
-    category,
-    create_date,
-    stock,
+    user_id,
+    amount,
+    shipping_address,
+    order_email,
+    order_date,
+    order_status,
   } = req.body;
   // OR
   // the below requires you to add everything one by one
@@ -50,10 +46,10 @@ router.post("/", (req, res) => {
   try {
     con.query(
       //When using the ${}, the content of con.query MUST be in the back tick
-      `INSERT INTO products (sku,name,price,weight,descriptions,thumbnail,image,category,create_date,stock) VALUES ("${sku}","${name}","${price}","${weight}","${descriptions}","${thumbnail}","${image}","${category}","${create_date}","${stock}")`,
+      `INSERT INTO orders (user_id,amount,shipping_address,order_email,order_date,order_status) VALUES ("${user_id}","${amount}","${shipping_address}","${order_email}","${order_date}","${order_status}")`,
       (err, result) => {
         if (err) throw err;
-        res.send(`product registered ${name}`);
+        res.send(`order made`);
       }
     );
   } catch (error) {
@@ -67,20 +63,16 @@ router.post("/", (req, res) => {
 router.put("/:id", (req, res) => {
   try {
     const {
-      sku ,
-      name,
-      price,
-      weight,
-      descriptions,
-      thumbnail,
-      image,
-      category,
-      create_date,
-      stock,
+        user_id,
+        amount,
+        shipping_address,
+        order_email,
+        order_date,
+        order_status,
     } = req.body;
 
     con.query(
-      `UPDATE products set sku="${sku}",name="${name}",price="${price}",weight="${weight}",descriptions="${descriptions}",thumbnail="${thumbnail}",image="${image}",category="${category}",create_date="${create_date}",stock="${stock}" WHERE product_id = "${req.params.id}"`,
+      `UPDATE orders set user_id="${user_id}",amount="${amount}",shipping_address="${shipping_address}",order_email="${order_email}",order_date="${order_date}",order_status="${order_status}"WHERE order_id = "${req.params.id}"`,
       (err, result) => {
         if (err) throw err;
         res.send(result);
@@ -97,7 +89,7 @@ router.put("/:id", (req, res) => {
 router.delete("/:id", (req, res) => {
   try {
     con.query(
-      `DELETE FROM products WHERE product_id = "${req.params.id}" `,
+      `DELETE FROM orders WHERE order_id = "${req.params.id}" `,
       (err, result) => {
         if (err) throw err;
         res.send(result);
