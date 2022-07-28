@@ -6,7 +6,7 @@ router.get("/", (req, res) => {
   try {
     con.query("SELECT * FROM users", (err, result) => {
       if (err) throw err;
-      res.send(result); 
+      res.send(result);
     });
   } catch (error) {
     console.log(error);
@@ -71,5 +71,49 @@ router.post("/", (req, res) => {
   }
 });
 
+// update user
+
+router.put("/:id", (req, res) => {
+  try {
+    const {
+      email,
+      password,
+      full_name,
+      billing_address,
+      default_shipping_address,
+      country,
+      phone,
+      user_type,
+    } = req.body;
+
+    con.query(
+      `UPDATE users set email="${email}",password="${password}",full_name="${full_name}",billing_address="${billing_address}",default_shipping_address="${default_shipping_address}",country="${country}",phone="${phone}",user_type="${user_type}" WHERE user_id = "${req.params.id}"`,
+      (err, result) => {
+        if (err) throw err;
+        res.send(result);
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
+
+// delete user
+
+router.delete("/:id", (req, res) => {
+  try {
+    con.query(
+      `DELETE FROM users WHERE user_id = "${req.params.id}" `,
+      (err, result) => {
+        if (err) throw err;
+        res.send(result);
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
 
 module.exports = router;
