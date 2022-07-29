@@ -190,13 +190,12 @@ router.post("/", (req, res) => {
 // update user
 
 router.put("/:id", (req, res) => {
-  const salt = bcrypt.genSaltSync(10);
-  const hash = bcrypt.hashSync(password, salt);
 
   try {
     const {
       email,
-      password:hash,
+
+   password,
       full_name,
       billing_address,
       default_shipping_address,
@@ -205,8 +204,10 @@ router.put("/:id", (req, res) => {
       user_type,
     } = req.body;
 
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
     con.query(
-      `UPDATE users set email="${email}",password="${password}",full_name="${full_name}",billing_address="${billing_address}",default_shipping_address="${default_shipping_address}",country="${country}",phone="${phone}",user_type="${user_type}" WHERE user_id = "${req.params.id}"`,
+      `UPDATE users set email="${email}",password="${hash}",full_name="${full_name}",billing_address="${billing_address}",default_shipping_address="${default_shipping_address}",country="${country}",phone="${phone}",user_type="${user_type}" WHERE user_id = "${req.params.id}"`,
       (err, result) => {
         if (err) throw err;
         res.send(result);

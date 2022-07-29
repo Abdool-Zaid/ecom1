@@ -3,6 +3,7 @@ const router = express.Router();
 const con = require("../lib/db_connection");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const middleware = require("../middleware/auth");
 
 // Register Route
 // The Route where Encryption starts
@@ -10,7 +11,7 @@ router.post("/order", (req, res) => {
   try {
     let sql = "INSERT INTO orders SET ?";
     const {
-      order_id,
+      user_id,
       amount,
       shipping_address,
       order_email,
@@ -21,7 +22,7 @@ router.post("/order", (req, res) => {
     // The start of hashing / encryption
 
     let order = {
-      order_id,
+      user_id,
       amount,
       shipping_address,
       order_email,
@@ -55,6 +56,7 @@ router.post("/check", (req, res) => {
         const payload = {
           order: {
             order_id: result[0].order_id,
+            user_id:result[0].user_id,
             amount: result[0].amount,
             shipping_address: result[0].shipping_address,
             order_email: result[0].order_email,
@@ -107,7 +109,6 @@ router.get("/", (req, res) => {
   }
 });
 
-const middleware = require("../middleware/auth");
 
 router.get("/", middleware, (req, res) => {
   try {
@@ -139,10 +140,11 @@ router.get("/:id", (req, res) => {
 // Add new order
 router.post("/", (req, res) => {
 
-  if (req.user.user_type.length!== 0){
+  if (req.body.user_type.length!== 0){
 
   // the below allows you to only need one const, but every input required is inside of the brackets
   const {
+    user_id,
     amount,
     shipping_address,
     order_email,
@@ -155,7 +157,7 @@ router.post("/", (req, res) => {
   try {
     con.query(
       //When using the ${}, the content of con.query MUST be in the back tick
-      `INSERT INTO orders (amount,shipping_address,order_email,order_date,order_status,) VALUES ("${amount}","${shipping_address}","${order_email}","${order_date}","${order_status}")`,
+      `INSERT INTO orders (user_id,amount,shipping_address,order_email,order_date,order_status,) VALUES ("${user_id}",${amount}","${shipping_address}","${order_email}","${order_date}","${order_status}")`,
       (err, result) => {
         if (err) throw err;
         res.send(`order registered ${order_id}`);

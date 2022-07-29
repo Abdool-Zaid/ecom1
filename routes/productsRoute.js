@@ -34,7 +34,7 @@ router.get("/:id", (req, res) => {
 });
 // Add new post
 router.post("/", (req, res) => {
-  if (req.user.user_type=== "admin"){
+  if (req.body.user_type=== "admin"){
 
   // the below allows you to only need one const, but every input required is inside of the brackets
   const {
@@ -74,7 +74,7 @@ else{
 // update user
 
 router.put("/:id", (req, res) => {
-  if (req.user.user_type=== "admin"){
+  if (req.body.user_type=== "admin"){
 
   try {
     const {
@@ -112,7 +112,7 @@ router.put("/:id", (req, res) => {
 // delete user
 
 router.delete("/:id",middleware, (req, res) => {
-  if (req.user.user_type=== "admin"){
+  if (req.body.user_type=== "admin"){
 
     try {
       con.query(
