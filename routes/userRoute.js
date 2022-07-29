@@ -190,10 +190,13 @@ router.post("/", (req, res) => {
 // update user
 
 router.put("/:id", (req, res) => {
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(password, salt);
+
   try {
     const {
       email,
-      password,
+      password:hash,
       full_name,
       billing_address,
       default_shipping_address,

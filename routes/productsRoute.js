@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const con = require("../lib/db_connection");
 
+const middleware = require("../middleware/auth");
+
+
 router.get("/", (req, res) => {
   try {
     con.query("SELECT * FROM products", (err, result) => {
@@ -31,6 +34,8 @@ router.get("/:id", (req, res) => {
 });
 // Add new post
 router.post("/", (req, res) => {
+  if (req.user.user_type=== "admin"){
+
   // the below allows you to only need one const, but every input required is inside of the brackets
   const {
     sku ,
@@ -60,11 +65,17 @@ router.post("/", (req, res) => {
     console.log(error);
     res.status(400).send(error);
   }
+}
+else{
+  res.send('not admin');
+}
 });
 
 // update user
 
 router.put("/:id", (req, res) => {
+  if (req.user.user_type=== "admin"){
+
   try {
     const {
       sku ,
@@ -89,24 +100,36 @@ router.put("/:id", (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
+
   }
+  }
+  else{
+    res.send('not admin');
+  }
+
 });
 
 // delete user
 
-router.delete("/:id", (req, res) => {
-  try {
-    con.query(
-      `DELETE FROM products WHERE product_id = "${req.params.id}" `,
-      (err, result) => {
-        if (err) throw err;
-        res.send(result);
+router.delete("/:id",middleware, (req, res) => {
+  if (req.user.user_type=== "admin"){
+
+    try {
+      con.query(
+        `DELETE FROM products WHERE product_id = "${req.params.id}" `,
+        (err, result) => {
+          if (err) throw err;
+          res.send(result);
+        }
+        );
+      } catch (error) {
+        console.log(error);
+        res.status(400).send(error);
       }
-    );
-  } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
-  }
+    }
+    else{
+      res.send('not admin');
+    }
 });
 
 module.exports = router;
