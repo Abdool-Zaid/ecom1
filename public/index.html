@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>all-users</title>
+  </head>
+  <body>
+    <script>
+      let users= [];
+      fetch("http://localhost:6969/users", {
+        method: "get",
+        Headers: {
+          "x-auth-token":
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJfaWQiOjEzLCJmdWxsX25hbWUiOiJBYmRvb2wgWmFpZCB0b29yYWJhbGx5IiwiZW1haWwiOiJzYWxhZGluQGdtYWlsLmNvbSIsInVzZXJfdHlwZSI6ImFkbWluIiwicGhvbmUiOiJ5ZXMiLCJjb3VudHJ5IjoibWFjaGluZSB3b3JsZCIsImJpbGxpbmdfYWRkcmVzcyI6ImZpcnN0IHRyZWUgb24gdGhlIGxlZnQiLCJkZWZhdWx0X3NoaXBwaW5nX2FkZHJlc3MiOiJiZWhpbmQgeW91In0sImlhdCI6MTY1OTM0NDQ2NCwiZXhwIjoxNjkwODgwNDY0fQ.A8Ei8A_mCbKxgf8YJP4dpvGqc3T3zUSL03GM3ZZEj-I",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          users.push(data);
+        });
+      console.log(users);
+    </script>
+  </body>
+</html>

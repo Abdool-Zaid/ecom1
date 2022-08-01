@@ -3,7 +3,7 @@ const router = express.Router();
 const con = require("../lib/db_connection");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-
+const fs = require('fs')
 
 // Register Route
 // The Route where Encryption starts
@@ -178,7 +178,7 @@ router.post("/", (req, res) => {
       `INSERT INTO users (email,password,full_name,billing_address,default_shipping_address,country,phone,user_type) VALUES ("${email}","${password}","${full_name}","${billing_address}","${default_shipping_address}","${country}","${phone}","${user_type}")`,
       (err, result) => {
         if (err) throw err;
-        res.send(`User registered ${full_name}`);
+        res.json(`User registered ${full_name}`);
       }
     );
   } catch (error) {
