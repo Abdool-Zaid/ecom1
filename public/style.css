@@ -1,0 +1,117 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Electrolize", sans-serif;
+    scroll-behavior: smooth;
+    border-width: 1;
+    border: dashed;
+  }
+  :root {
+    --bgTemp: #123417;
+    --ss: 1%;
+    --sixty: #1e3a60;
+    --thirty: #efefef;
+    --acc: #42c8ee;
+    --sf: 2em;
+    --full: 100%;
+    --menu: #42c8ee7e;
+  }
+  /* unvisited link */
+  a:link {
+    color: var(--acc);
+    text-decoration: none;
+  }
+  
+  /* visited link */
+  a:visited {
+    color: var(--acc);
+    text-decoration: none;
+  }
+  
+  /* mouse over link */
+  a:hover {
+    color: var(--acc);
+    text-decoration: none;
+  }
+  
+  /* selected link */
+  a:active {
+    color: var(--acc);
+    text-decoration: none;
+  }
+  body {
+    background-color: var(--thirty);
+  }
+  #landing {
+  display: none;
+      margin-bottom: var(--sf);
+  }
+  #poster{
+      position: relative;
+      top: 0;
+      overflow-y: hidden;
+  }
+  
+  #carousel > img{
+      background-color: var(--acc);
+      /* padding:3em; */
+      
+      border-width: var(--sf);
+  
+  }
+  #sort {
+    position: fixed;
+    top: 0;
+    display: flex;
+    margin-left: var(--ss);
+  }
+  
+  
+  #sort > p {
+    margin-left: var(--ss);
+    padding-left: var(--ss);
+  }
+  footer {
+    background-color: var(--thirty);
+    position: fixed;
+    bottom: 0;
+    width: var(--full);
+    height: var(--2em);
+    color: var(--acc);
+    margin-bottom: 0;
+  }
+  footer > a {
+    margin: var(--sf);
+  }
+  #HUD {
+    width: var(--full);
+    height: var(--full)- var(--sf);
+  }
+  
+  /* canvas{
+      background-color: var(--thirty);
+      width: var(--full);
+      height: var(--full)- var(--sf);
+  } */
+  #target {
+      
+    display: flex;
+    /* display: none; */
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: var(--ss);
+  }
+  .Item {
+    margin: var(--sf);
+    background-color: var(--sixty);
+    width: max-content;
+    padding: var(--ss);
+  
+    transform: scale(1);
+    transform-origin: center;
+  }
+  .item:hover {
+    transform: scale(2);
+    transition: transform 200ms ease-in-out;
+  }
