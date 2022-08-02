@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>all-users</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="target"></div>
+    
+    <script>
+      fetch("http://localhost:6969/users", {
+        method: "get",
+        Headers: {
+          "x-auth-token":
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJfaWQiOjEzLCJmdWxsX25hbWUiOiJBYmRvb2wgWmFpZCB0b29yYWJhbGx5IiwiZW1haWwiOiJzYWxhZGluQGdtYWlsLmNvbSIsInVzZXJfdHlwZSI6ImFkbWluIiwicGhvbmUiOiJ5ZXMiLCJjb3VudHJ5IjoibWFjaGluZSB3b3JsZCIsImJpbGxpbmdfYWRkcmVzcyI6ImZpcnN0IHRyZWUgb24gdGhlIGxlZnQiLCJkZWZhdWx0X3NoaXBwaW5nX2FkZHJlc3MiOiJiZWhpbmQgeW91In0sImlhdCI6MTY1OTM0NDQ2NCwiZXhwIjoxNjkwODgwNDY0fQ.A8Ei8A_mCbKxgf8YJP4dpvGqc3T3zUSL03GM3ZZEj-I",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          let users = [];
+          users = data;
+          //   console.log(users);
+
+          // for (let i = 0; i < users.length; i++) {
+          //     console.log(users[i]);
+          // }
+
+          users.forEach((user) => {
+            document.querySelector("#target").innerHTML += `
+    <div class="Item"  onclick='BuyNow()'  >
+    <h1>${user.full_name}</h1>
+    <h4 dir="rtl">id: ${user.user_id}</h4>
+    <p class="subInfo" dir="rtl">email: ${user.email}</p>
+    <p class="subInfo" dir="rtl">password: ${user.password}</p>
+    <p class="subInfo" dir="rtl"> billing address: ${user.billing_address}</p>
+    <p class="subInfo" dir="rtl"> default shipping address: ${user.default_shipping_address}</p>
+    <p class="subInfo" dir="rtl" class='pop'> country: ${user.country}</p>
+    <p class="subInfo" dir="rtl"> phone: ${user.phone}</p>
+    <p class="subInfo" dir="rtl"> user type: ${user.user_type}</p>
+    
+    </div>
+    `;
+          });
+        });
+    </script>
+  </body>
+</html>
