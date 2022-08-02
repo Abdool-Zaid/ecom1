@@ -3,10 +3,6 @@
 
 
 // console.log('active')
-app.use(express.static("public"));
-app.get("/", function (req, res) {
-  res.sendFile(__dirnamev + "/" + "index.html");
-});
 
 fetch("http://localhost:6969/products", {
   method: "get",
@@ -44,7 +40,7 @@ let LoginRoute = () => {
 let email = document.querySelector("#email").value;
 async function UserLogin(e) {
   e.preventDefault();
-  const response = await fetch("http://localhost:8081/users/login", {
+  const response = await fetch("http://localhost:6969/users/login", {
     method: "POST",
     body: JSON.stringify({
       email: document.querySelector("#email").value,

@@ -4,6 +4,8 @@ const app = express(); // Initialize express as an app variable
 app.set("port", process.env.PORT || 6969); // Set the port
 app.use(express.json()); // Enable the server to handle JSON requests
 app.use(cors()); // Dont let local development give errors
+var bodyParser = require("body-parser");
+
 
 // import routes
 const userRoute = require("./routes/userRoute");
@@ -24,5 +26,5 @@ app.listen(app.get("port"), () => {
 
 app.use(express.static("public"));
 app.get("/", function (req, res) {
-res.sendFile(__dirnamev + "/" + "index.html");
-});
+res.sendFile(__dirnamev + "/" + "index.html")}
+);
