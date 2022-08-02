@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const con = require("../lib/db_connection");
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 
 
 // Register Route
@@ -29,8 +29,8 @@ router.post("/register", (req, res) => {
     let user = {
       full_name,
       email,
-      
-      password:hash,
+
+      password: hash,
       user_type,
       phone,
       country,
@@ -46,7 +46,6 @@ router.post("/register", (req, res) => {
     console.log(error);
   }
 });
-
 
 // Login
 
@@ -129,19 +128,20 @@ router.get("/", (req, res) => {
 });
 
 const middleware = require("../middleware/auth");
+const { application } = require("express");
 
-  router.get("/", middleware, (req, res) => {
-    try {
-      let sql = "SELECT * FROM users";
-      con.query(sql, (err, result) => {
-        if (err) throw err;
-        res.send(result);
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  });
-  
+router.get("/", middleware, (req, res) => {
+  try {
+    let sql = "SELECT * FROM users";
+    con.query(sql, (err, result) => {
+      if (err) throw err;
+      res.send(result);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 // Gets one users
 router.get("/:id", (req, res) => {
   try {
@@ -191,12 +191,11 @@ router.post("/", (req, res) => {
 // update user
 
 router.put("/:id", (req, res) => {
-
   try {
     const {
       email,
 
-   password,
+      password,
       full_name,
       billing_address,
       default_shipping_address,
@@ -235,42 +234,37 @@ router.delete("/:id", (req, res) => {
     console.log(error);
     res.status(400).send(error);
   }
-
-
 });
 
-router.post('/forgot-psw', (req, res) => {
+router.post("/forgot-psw", (req, res) => {
   try {
-  let sql = "SELECT * FROM users WHERE ?";
-  let user = {
-    email: req.body.email,
-  };
-  con.query(sql, user, (err, result) => {
-    if (err) throw err;
-    if(result === 0) {
-      res.status(400), res.send("Email not found")
-    }
-    else {
+    let sql = "SELECT * FROM users WHERE ?";
+    let user = {
+      email: req.body.email,
+    };
+    con.query(sql, user, (err, result) => {
+      if (err){ throw err};
+      if (result === 0) {
+        res.status(400), res.send("Email not found");
+      } else {
+        // Allows me to connect to the given email account || Your Email
+        const transporter = nodemailer.createTransport({
+          host: process.env.MAILERHOST,
+          port: process.env.MAILERPORT,
+          auth: {
+            user: process.env.MAILERUSER,
+            pass: process.env.MAILERPASS,
+          },
+        });
 
-      // Allows me to connect to the given email account || Your Email
-      const transporter = nodemailer.createTransport({
-        host: process.env.MAILERHOST,
-        port: process.env.MAILERPORT,
-        auth: {
-          user: process.env.MAILERUSER,
-          pass: process.env.MAILERPASS,
-        },
-      });
+        // How the email should be sent out
+        var mailData = {
+          from: process.env.MAILERUSER,
+          // Sending to the person who requested
+          to: result[0].email,
 
-      // How the email should be sent out
-    var mailData = {
-      from: process.env.MAILERUSER,
-      // Sending to the person who requested
-      to: result[0].email,
-
-      subject: 'Password Reset',
-      html:
-        `<div>
+          subject: "Password Reset",
+          html: `<div>
           <h3>Hi ${result[0].full_name},</h3>
           <br>
           <marquee behavior="scroll" direction="right">
@@ -292,43 +286,32 @@ router.post('/forgot-psw', (req, res) => {
             Email: ${process.env.MAILERUSER}
             <br>
           <div>
-        </div>`
-    };
+        </div>`,
+        };
 
-    // Check if email can be sent
-    // Check password and email given in .env file
-    transporter.verify((error, success) => {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Email valid! ', success)
+        // Check if email can be sent
+        // Check password and email given in .env file
+        transporter.verify((error, success) => {
+          if (error) {
+            console.log(error);
+          } else {
+            console.log("Email valid! ", success);
+            
+          }
+        });
+
+        transporter.sendMail(mailData, (error, info) => {
+          if (error) {
+            console.log(error);
+          } else {
+            res.status("Please Check your email", result[0].user_id);
+          }
+        });
       }
     });
-
-    transporter.sendMail(mailData,  (error, info) => {
-      if (error) {
-        console.log(error);
-      } else {
-        res.status('Please Check your email', result[0].user_id)
-      }
-    });
-
-    }
-  });
-} catch (error) {
-  console.log(error);
-}
-})
-
-
-
-
-
-
-
-
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 module.exports = router;
-
-
-

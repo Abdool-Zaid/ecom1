@@ -1,29 +1,60 @@
+
+
+
+
 // console.log('active')
+app.use(express.static("public"));
+app.get("/", function (req, res) {
+  res.sendFile(__dirnamev + "/" + "index.html");
+});
 
 fetch("http://localhost:6969/products", {
-        method: "get",
-        Headers: {
-          "x-auth-token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJfaWQiOjE2LCJmdWxsX25hbWUiOiJtYWRkaXNvbiBqYWNvYnMiLCJlbWFpbCI6Im1hZGRpc29uLmphY29iczQ3QGV0aGVyZWFsLmVtYWlsIiwidXNlcl90eXBlIjoiYWRtaW4iLCJwaG9uZSI6InllcyIsImNvdW50cnkiOiJtYWNoaW5lIHdvcmxkIiwiYmlsbGluZ19hZGRyZXNzIjoiZmlyc3QgdHJlZSBvbiB0aGUgbGVmdCIsImRlZmF1bHRfc2hpcHBpbmdfYWRkcmVzcyI6ImJlaGluZCB5b3UifSwiaWF0IjoxNjU5NDI2MzM3LCJleHAiOjE2OTA5NjIzMzd9.Bo68hVUhuPVPusBM_RODjKk5EHBM35Yb68s-M0jntQY",
-        },
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          let products = [];
-        products = data;
-            console.log(products);
+  method: "get",
+  Headers: {
+    "x-auth-token":
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJfaWQiOjE2LCJmdWxsX25hbWUiOiJtYWRkaXNvbiBqYWNvYnMiLCJlbWFpbCI6Im1hZGRpc29uLmphY29iczQ3QGV0aGVyZWFsLmVtYWlsIiwidXNlcl90eXBlIjoiYWRtaW4iLCJwaG9uZSI6InllcyIsImNvdW50cnkiOiJtYWNoaW5lIHdvcmxkIiwiYmlsbGluZ19hZGRyZXNzIjoiZmlyc3QgdHJlZSBvbiB0aGUgbGVmdCIsImRlZmF1bHRfc2hpcHBpbmdfYWRkcmVzcyI6ImJlaGluZCB5b3UifSwiaWF0IjoxNjU5NDI2MzM3LCJleHAiOjE2OTA5NjIzMzd9.Bo68hVUhuPVPusBM_RODjKk5EHBM35Yb68s-M0jntQY",
+  },
+})
+  .then((response) => response.json())
+  .then((data) => {
+    let products = [];
+    products = data;
+    console.log(products);
 
-       
-
-          products.forEach((product) => {
-            document.querySelector("#target").innerHTML += `
+    products.forEach((product) => {
+      document.querySelector("#target").innerHTML += `
     <div class="Item"  onclick='BuyNow()'  >
     <h1>${product.name}</h1>
     <h4 dir="rtl"> ${product.descriptions}</h4>
     <p class="subInfo" dir="rtl"> R${product.price}</p>
-    <p class="subInfo" dir="rtl">amount available ${product.stock}</p>
+    <p class="subInfo" dir="rtl">amount available: ${product.stock}</p>
     <p class="subInfo" dir="rtl"> mass ${product.weight}</p>
     </div>
     `;
-          });
-        });
+    });
+  });
+let route = () => {
+  alert("active");
+};
+
+let LoginRoute = () => {
+  fetch("http://localhost:6969/users");
+};
+
+let email = document.querySelector("#email").value;
+async function UserLogin(e) {
+  e.preventDefault();
+  const response = await fetch("http://localhost:8081/users/login", {
+    method: "POST",
+    body: JSON.stringify({
+      email: document.querySelector("#email").value,
+      password: document.querySelector("#password").value,
+    }),
+    headers: {
+      "Content-type": "application/json",
+    },
+  });
+  const data = await response.json();
+  console.log(data);
+  return data;
+}
