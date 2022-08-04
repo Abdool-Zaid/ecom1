@@ -5,7 +5,6 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 
-
 // Register Route
 // The Route where Encryption starts
 router.post("/register", (req, res) => {
@@ -59,14 +58,22 @@ router.post("/login", (req, res) => {
     con.query(sql, user, async (err, result) => {
       if (err) throw err;
       if (result.length === 0) {
-        res.send("Email not found please register");
+        // res.send("");
+        res.status(400).json({
+          status: "error",
+          error: "Email not found please register",
+        });
       } else {
         const isMatch = await bcrypt.compare(
           req.body.password,
           result[0].password
         );
         if (!isMatch) {
-          res.send("Password incorrect");
+          // res.send('{"msg":"pasword incorrect"}');
+          res.status(400).json({
+            status: "error",
+            error: "pasword incorrect",
+          });
         } else {
           // The information the should be stored inside token
           const payload = {
@@ -243,7 +250,9 @@ router.post("/forgot-psw", (req, res) => {
       email: req.body.email,
     };
     con.query(sql, user, (err, result) => {
-      if (err){ throw err};
+      if (err) {
+        throw err;
+      }
       if (result === 0) {
         res.status(400), res.send("Email not found");
       } else {
@@ -296,7 +305,6 @@ router.post("/forgot-psw", (req, res) => {
             console.log(error);
           } else {
             console.log("Email valid! ", success);
-            
           }
         });
 

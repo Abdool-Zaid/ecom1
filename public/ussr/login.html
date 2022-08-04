@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="login page"/>
     <title>Login</title>
   </head>
   <body>
@@ -17,30 +18,29 @@
       let ResetData = () => {
         localStorage.clear();
       };
-      
-      ResetData()
-            async function VerifyUser() {
-              const response = await fetch(
-                "http://localhost:6969/users/users/verify",
-                {
-                  method: "GET",
-                  headers: {
-                    "Content-type": "application/json",
-                    "x-auth-token": JSON.parse(localStorage.token),
-                  },
-                }
-              );
-              let data = await response.json();
-              if (data.msg == "Unauthorized Access!") {
-                // alert("login first");
-                console.log(data);
-              } else {
-                localStorage.setItem("UserName", JSON.stringify(data.user.full_name));
-                localStorage.setItem("UserID", JSON.stringify(data.user.user_id));
-                localStorage.setItem("UserType", JSON.stringify(data.user.user_type));
 
-              }
-            }
+      ResetData();
+      async function VerifyUser() {
+        const response = await fetch(
+          "http://localhost:6969/users/users/verify",
+          {
+            method: "GET",
+            headers: {
+              "Content-type": "application/json",
+              "x-auth-token": JSON.parse(localStorage.token),
+            },
+          }
+        );
+        let data = await response.json();
+        if (data.msg == "Unauthorized Access!") {
+          // alert("login first");
+          console.log(data.msg);
+        } else {
+          localStorage.setItem("UserName", JSON.stringify(data.user.full_name));
+          localStorage.setItem("UserID", JSON.stringify(data.user.user_id));
+          localStorage.setItem("UserType", JSON.stringify(data.user.user_type));
+        }
+      }
 
       async function UserLogin() {
         const response = await fetch("http://localhost:6969/users/login", {
@@ -54,19 +54,22 @@
           },
         });
         let data = await response.json();
-        if (data == "Password incorrect") {
-          alert("you have mistaken your password my child");
-        } else if (data == "Email not found please register") {
-          alert("Email not found please register");
-        } else {
+
+        if (data.status === "error") {
+          alert(data.error);
+        }
+        // if (data.msg === "pasword incorrect") {
+        //   alert("you have mistaken your password my child");
+        // } else if (data == "Email not found please register") {
+        //   alert("Email not found please register");
+        // }
+         else {
           localStorage.setItem("token", JSON.stringify(data.token));
-          VerifyUser()
-          alert("logged in")
+          VerifyUser();
+          alert("logged in");
         }
       }
 
-
-      
       async function ViewUsers() {
         const response = await fetch("http://localhost:6969/users/", {
           method: "GET",
