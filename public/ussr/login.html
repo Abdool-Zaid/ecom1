@@ -7,18 +7,40 @@
     <title>Login</title>
   </head>
   <body>
-    <form onsubmit="event.preventDefault(), UserLogin() ">
+    <form onsubmit="event.preventDefault(), UserLogin()">
       <input type="email" placeholder="email" id="email" />
       <input type="password" placeholder="password" id="password" />
       <button type="submit">login</button>
     </form>
     <button onclick="ViewUsers()">DO NO CLICK!!!</button>
-    <button onclick="VerifyUser()">verify</button>
     <script>
       let ResetData = () => {
         localStorage.clear();
       };
-      // ResetData()
+      
+      ResetData()
+            async function VerifyUser() {
+              const response = await fetch(
+                "http://localhost:6969/users/users/verify",
+                {
+                  method: "GET",
+                  headers: {
+                    "Content-type": "application/json",
+                    "x-auth-token": JSON.parse(localStorage.token),
+                  },
+                }
+              );
+              let data = await response.json();
+              if (data.msg == "Unauthorized Access!") {
+                // alert("login first");
+                console.log(data);
+              } else {
+                localStorage.setItem("UserName", JSON.stringify(data.user.full_name));
+                localStorage.setItem("UserID", JSON.stringify(data.user.user_id));
+                localStorage.setItem("UserType", JSON.stringify(data.user.user_type));
+
+              }
+            }
 
       async function UserLogin() {
         const response = await fetch("http://localhost:6969/users/login", {
@@ -32,36 +54,19 @@
           },
         });
         let data = await response.json();
-        console.log(data);
         if (data == "Password incorrect") {
           alert("you have mistaken your password my child");
         } else if (data == "Email not found please register") {
           alert("Email not found please register");
         } else {
           localStorage.setItem("token", JSON.stringify(data.token));
+          VerifyUser()
+          alert("logged in")
         }
       }
 
-      async function VerifyUser() {
-        const response = await fetch(
-          "http://localhost:6969/users/users/verify",
-          {
-            method: "GET",
-            headers: {
-              "Content-type": "application/json",
-              "x-auth-token": JSON.parse(localStorage.token),
-            },
-          }
-        );
-        let data = await response.json();
-        if (data.msg == "Unauthorized Access!") {
-          // alert("login first");
-          console.log(data);
-        } else {
-          console.log(data);
-        }
-      }
 
+      
       async function ViewUsers() {
         const response = await fetch("http://localhost:6969/users/", {
           method: "GET",
