@@ -1,7 +1,4 @@
-
-
-
-
+// console.log = 0;
 // console.log('active')
 
 fetch("http://localhost:6969/products", {
@@ -15,11 +12,10 @@ fetch("http://localhost:6969/products", {
   .then((data) => {
     let products = [];
     products = data;
-    console.log(products);
 
     products.forEach((product) => {
       document.querySelector("#target").innerHTML += `
-    <div class="Item"  onclick='BuyNow()'  >
+    <div class="Item"  onclick='showItem(this.id)' id="${product.product_id}" >
     <h1>${product.name}</h1>
     <h4 dir="rtl"> ${product.descriptions}</h4>
     <p class="subInfo" dir="rtl"> R${product.price}</p>
@@ -30,27 +26,45 @@ fetch("http://localhost:6969/products", {
     });
   });
 let route = () => {
-//   alert("active");
+  //   alert("active");
 };
 
-let LoginRoute = () => {
-  fetch("http://localhost:6969/users");
-};
+// let LoginRoute = () => {
+//   fetch("http://localhost:6969/users");
+// };
 
-let email = document.querySelector("#email").value;
-async function UserLogin(e) {
-  e.preventDefault();
-  const response = await fetch("http://localhost:6969/users/login", {
-    method: "POST",
-    body: JSON.stringify({
-      email: document.querySelector("#email").value,
-      password: document.querySelector("#password").value,
-    }),
-    headers: {
-      "Content-type": "application/json",
-    },
-  });
-  const data = await response.json();
-  console.log(data);
-  return data;
+// let email = document.querySelector("#email").value;
+// async function UserLogin(e) {
+//   e.preventDefault();
+//   const response = await fetch("http://localhost:6969/users/login", {
+//     method: "POST",
+//     body: JSON.stringify({
+//       email: document.querySelector("#email").value,
+//       password: document.querySelector("#password").value,
+//     }),
+//     headers: {
+//       "Content-type": "application/json",
+//     },
+//   });
+//   const data = await response.json();
+//   console.log(data);
+//   return data;
+// }
+
+async function showItem(id) {
+  const response = await fetch(
+    "http://localhost:6969/products/"+`${id}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+      },
+    }
+  );
+  let data = await response.json();
+  let product= data;
+  localStorage.setItem("product", JSON.stringify(product.pop()));
+alert(localStorage.product)
+
 }
+// }
