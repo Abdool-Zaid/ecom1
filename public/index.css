@@ -5,10 +5,6 @@
   border-radius: 23px;
   font-weight: 100;
 }
-body{
-  font-family: "Nanum Gothic", sans-serif;
-
-}
 :root {
   --bg: #64fd64;
   --ss: 1%;
@@ -59,4 +55,8 @@ footer {
   position: fixed;
   bottom: 0;
   margin: 3px;
+}
+*{
+  font-family: "Nanum Gothic", sans-serif;
+
 }
