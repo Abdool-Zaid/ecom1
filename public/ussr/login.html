@@ -12,13 +12,13 @@
       <input type="password" placeholder="password" id="password" />
       <button type="submit">login</button>
     </form>
-  <button onclick="ViewUsers()">DO NO CLICK!!!</button>
-  <button onclick="VerifyUser()">verify</button>
+    <button onclick="ViewUsers()">DO NO CLICK!!!</button>
+    <button onclick="VerifyUser()">verify</button>
     <script>
-let ResetData=()=>{
-  localStorage.clear()
-}
-ResetData()
+      let ResetData = () => {
+        localStorage.clear();
+      };
+      // ResetData()
 
       async function UserLogin() {
         const response = await fetch("http://localhost:6969/users/login", {
@@ -32,44 +32,43 @@ ResetData()
           },
         });
         let data = await response.json();
-        console.log(data)
+        console.log(data);
         if (data == "Password incorrect") {
           alert("you have mistaken your password my child");
         } else if (data == "Email not found please register") {
           alert("Email not found please register");
         } else {
-          localStorage.setItem("user", JSON.stringify(data));
+          localStorage.setItem("token", JSON.stringify(data.token));
         }
       }
-      
+
       async function VerifyUser() {
-        const response = await fetch("http://localhost:6969/users/users/verify", {
-          method: "GET",
-          
-          headers: {
-            "Content-type": "application/json",
-            "x-auth-token":"this.localStorage.getItem('user')"
-          },
-        });
-         let data = await response.json()
-         if(data.msg=='Unauthorized Access!'){
-          alert('login first')
-         }
-        }
-      
-      
-      
-        async function ViewUsers(){
-          const response = await fetch("http://localhost:6969/users/", {
+        const response = await fetch(
+          "http://localhost:6969/users/users/verify",
+          {
             method: "GET",
-          });
-          let data = await response.json()
-console.log(data)
+            headers: {
+              "Content-type": "application/json",
+              "x-auth-token": JSON.parse(localStorage.token),
+            },
+          }
+        );
+        let data = await response.json();
+        if (data.msg == "Unauthorized Access!") {
+          // alert("login first");
+          console.log(data);
+        } else {
+          console.log(data);
+        }
+      }
 
-
-
-       }
-      
+      async function ViewUsers() {
+        const response = await fetch("http://localhost:6969/users/", {
+          method: "GET",
+        });
+        let data = await response.json();
+        console.log(data);
+      }
     </script>
   </body>
 </html>
