@@ -12,25 +12,48 @@
       <input type="password" placeholder="password" id="password" />
       <button type="submit">login</button>
     </form>
+  <button onclick="ViewUsers()">DO NO CLICK!!!</button>
     <script>
-      let email = document.querySelector("#email").value;
       async function UserLogin() {
-          
-          const response = await fetch("http://localhost:6969/users/login", {
-              method: "POST",
-              body: JSON.stringify({
-                  email: document.querySelector("#email").value,
-                  password: document.querySelector("#password").value,
-                }),
-                headers: {
-                    "Content-type": "application/json",
-                },
-            });
-            console.log('active');
-        const data = await response.json();
-        // console.log(headers);
-        return data;
+        const response = await fetch("http://localhost:6969/users/login", {
+          method: "POST",
+          body: JSON.stringify({
+            email: document.querySelector("#email").value,
+            password: document.querySelector("#password").value,
+          }),
+          headers: {
+            "Content-type": "application/json",
+          },
+        });
+        let data = await response.json();
+        if (data == "Password incorrect") {
+          alert("you have mistaken your password my child");
+        } else if (data == "Email not found please register") {
+          alert("Email not found please register");
+        } else {
+          localStorage.setItem("user", JSON.stringify(data));
+        }
       }
+      
+      async function VerifyUser() {
+        const response = await fetch("http://localhost:6969/users/users/verify", {
+          method: "POST",
+          body: JSON.stringify({
+          }),
+          headers: {
+            "Content-type": "application/json",
+            "x-auth-token":localStorage.user
+          },
+        });
+         let data = await response.json()
+         console.log(data)
+        }
+      
+        VerifyUser() 
+      
+      
+      
+      
     </script>
   </body>
 </html>

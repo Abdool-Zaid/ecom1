@@ -30,7 +30,7 @@ fetch("http://localhost:6969/products", {
     });
   });
 let route = () => {
-  alert("active");
+//   alert("active");
 };
 
 let LoginRoute = () => {
