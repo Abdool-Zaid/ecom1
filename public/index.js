@@ -1,7 +1,7 @@
 // console.log = 0;
 // console.log('active')
 
-fetch("http://localhost:6969/products", {
+fetch("http://ecom-oneazt.herokuapp.com/products", {
   method: "get",
   Headers: {
     "x-auth-token":
@@ -30,13 +30,13 @@ let route = () => {
 };
 
 // let LoginRoute = () => {
-//   fetch("http://localhost:6969/users");
+//   fetch("http://ecom-oneazt.herokuapp.com/users");
 // };
 
 // let email = document.querySelector("#email").value;
 // async function UserLogin(e) {
 //   e.preventDefault();
-//   const response = await fetch("http://localhost:6969/users/login", {
+//   const response = await fetch("http://ecom-oneazt.herokuapp.com/users/login", {
 //     method: "POST",
 //     body: JSON.stringify({
 //       email: document.querySelector("#email").value,
@@ -53,7 +53,7 @@ let route = () => {
 
 async function showItem(id) {
   const response = await fetch(
-    "http://localhost:6969/products/"+`${id}`,
+    "http://ecom-oneazt.herokuapp.com/products/"+`${id}`,
     {
       method: "GET",
       headers: {
