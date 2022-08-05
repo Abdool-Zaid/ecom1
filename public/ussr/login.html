@@ -36,6 +36,7 @@
           // alert("login first");
           console.log(data.msg);
         } else {
+          console.log(data.user)
           localStorage.setItem("UserName", JSON.stringify(data.user.full_name));
           localStorage.setItem("UserID", JSON.stringify(data.user.user_id));
           localStorage.setItem("UserType", JSON.stringify(data.user.user_type));
