@@ -61,10 +61,33 @@ async function showItem(id) {
       },
     }
   );
+  let products= []
   let data = await response.json();
   let product= data;
+  console.log(product)
+  products.push(product)
   localStorage.setItem("product", JSON.stringify(product.pop()));
-alert(localStorage.product)
+  // alert(localStorage.product)
+  
+  products.push(JSON.parse(localStorage.product))
+  console.log(products)
+  products.forEach((product) => {
+    Basket.innerHTML+=`
+    <div class="productName">
+    <h1>
+    ${product.name}
+    </h1>
+    </div>
+    <div class="productContent">
+    <img src="${product.image}" alt="${product.name}">
+    <h3>${product.descriptions}</h3>
+    <p>R${product.price}</p>
+    </div>
+    `
+    localStorage.setItem('cart',JSON.stringify(products))
+})
+
+
 
 }
 // }

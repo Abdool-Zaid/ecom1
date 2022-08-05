@@ -10,6 +10,7 @@
   --ss: 1%;
   --sb: 2px;
   --sixty: #d5cabd;
+  --cartBg: #d5cabda8;
   --thirty: #4e8397;
   --acc: #845ec2;
   --chestHair: #00000000;
@@ -56,7 +57,28 @@ footer {
   bottom: 0;
   margin: 3px;
 }
-*{
+* {
   font-family: "Nanum Gothic", sans-serif;
-
+}
+#userCart {
+  padding: var(--ss);
+  margin: var(--ss);
+  background-color: var(--chestHair);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  transform-origin: bottom left;
+  transform: scale(0);
+  max-height: 40vh;
+  width: 20vw;
+  overflow-y: scroll;
+}
+#userCart.active {
+  background-color:var(--cartBg);
+  transform: scale(1);
+}
+#userCart > button{
+  position: fixed;
+  bottom: 0;
 }
