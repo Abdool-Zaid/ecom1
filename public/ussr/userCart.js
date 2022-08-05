@@ -11,7 +11,7 @@ if(!localStorage.getItem('product')){
 else{
     window.addEventListener('click',diplayBasket())
 }
-document.querySelectorAll('.Item').addEventListener('click',showProduct())
+// document.querySelectorAll('.Item').addEventListener('click',showProduct())
 
 let ResetData = () => {
     localStorage.clear();
