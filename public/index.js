@@ -7,11 +7,11 @@ fetch("http://ecom-oneazt.herokuapp.com/products", {
     "x-auth-token":
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJfaWQiOjE2LCJmdWxsX25hbWUiOiJtYWRkaXNvbiBqYWNvYnMiLCJlbWFpbCI6Im1hZGRpc29uLmphY29iczQ3QGV0aGVyZWFsLmVtYWlsIiwidXNlcl90eXBlIjoiYWRtaW4iLCJwaG9uZSI6InllcyIsImNvdW50cnkiOiJtYWNoaW5lIHdvcmxkIiwiYmlsbGluZ19hZGRyZXNzIjoiZmlyc3QgdHJlZSBvbiB0aGUgbGVmdCIsImRlZmF1bHRfc2hpcHBpbmdfYWRkcmVzcyI6ImJlaGluZCB5b3UifSwiaWF0IjoxNjU5NDI2MzM3LCJleHAiOjE2OTA5NjIzMzd9.Bo68hVUhuPVPusBM_RODjKk5EHBM35Yb68s-M0jntQY",
   },
-  mode:'no-cors'
+  // mode:'no-cors'
 })
   .then((response) => response.json())
   .then((data) => {
-    let products = [];
+    let products = []
     products = data;
 
     products.forEach((product) => {
@@ -62,15 +62,15 @@ async function showItem(id) {
       },
     }
   );
-  let products= []
+  let cartArray= []
   let data = await response.json();
   let product= data;
   localStorage.setItem("product", JSON.stringify(product.pop()));
   // alert(localStorage.product)
   
-  products.push(JSON.parse(localStorage.product))
-  console.log(products)
-  products.forEach((product) => {
+  cartArray.push(JSON.parse(localStorage.product))
+  console.log(cartArray)
+  cartArray.forEach((product) => {
     Basket.innerHTML+=`
     <div class="productName">
     <h1>
@@ -83,7 +83,7 @@ async function showItem(id) {
     <p>R${product.price}</p>
     </div>
     `
-    localStorage.setItem('cart',JSON.stringify(products))
+    localStorage.setItem('cart',JSON.stringify(cartArray))
 })
 
 

@@ -34,7 +34,7 @@ router.get("/:id", (req, res) => {
 });
 // Add new post
 router.post("/", (req, res) => {
-  if (req.body.user_type=== "admin"){
+  // if (req.header.token> 4){
 
   // the below allows you to only need one const, but every input required is inside of the brackets
   const {
@@ -65,10 +65,10 @@ router.post("/", (req, res) => {
     console.log(error);
     res.status(400).send(error);
   }
-}
-else{
-  res.send('not admin');
-}
+// }
+// else{
+//   res.send('not admin');
+// }
 });
 
 // update user
