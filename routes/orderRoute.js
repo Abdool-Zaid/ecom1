@@ -56,7 +56,7 @@ router.post("/check", (req, res) => {
         const payload = {
           order: {
             order_id: result[0].order_id,
-            user_id:result[0].user_id,
+            user_id: result[0].user_id,
             amount: result[0].amount,
             shipping_address: result[0].shipping_address,
             order_email: result[0].order_email,
@@ -109,7 +109,6 @@ router.get("/", (req, res) => {
   }
 });
 
-
 router.get("/", middleware, (req, res) => {
   try {
     let sql = "SELECT * FROM orders";
@@ -139,38 +138,35 @@ router.get("/:id", (req, res) => {
 });
 // Add new order
 router.post("/", (req, res) => {
-
-  if (req.body.user_type.length!== 0){
-
-  // the below allows you to only need one const, but every input required is inside of the brackets
-  const {
-    user_id,
-    amount,
-    shipping_address,
-    order_email,
-    order_date,
-    order_status,
-  } = req.body;
-  // OR
-  // the below requires you to add everything one by one
-  //   const email = req.body.email;
-  try {
-    con.query(
-      //When using the ${}, the content of con.query MUST be in the back tick
-      `INSERT INTO orders (user_id,amount,shipping_address,order_email,order_date,order_status,) VALUES ("${user_id}",${amount}","${shipping_address}","${order_email}","${order_date}","${order_status}")`,
-      (err, result) => {
-        if (err) throw err;
-        res.send(`order registered ${order_id}`);
-      }
-    );
-  } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
+  if (req.body.user_type.length !== 0) {
+    // the below allows you to only need one const, but every input required is inside of the brackets
+    const {
+      user_id,
+      amount,
+      shipping_address,
+      order_email,
+      order_date,
+      order_status,
+    } = req.body;
+    // OR
+    // the below requires you to add everything one by one
+    //   const email = req.body.email;
+    try {
+      con.query(
+        //When using the ${}, the content of con.query MUST be in the back tick
+        `INSERT INTO orders (user_id,amount,shipping_address,order_email,order_date,order_status,) VALUES ("${user_id}",${amount}","${shipping_address}","${order_email}","${order_date}","${order_status}")`,
+        (err, result) => {
+          if (err) throw err;
+          res.send(`order registered ${order_id}`);
+        }
+      );
+    } catch (error) {
+      console.log(error);
+      res.status(400).send(error);
+    }
+  } else {
+    res.send("login first");
   }
-}
-else{
-  res.send('login first');
-}
 });
 
 // update order
